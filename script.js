@@ -42,7 +42,7 @@ class LinkedList {
   }
 
   giveTail() {
-    return this.lastNode.value;
+    return this.tail.value;
   }
 
   at(index) {
@@ -55,6 +55,101 @@ class LinkedList {
     }
     return currentNode;
   }
+  pop() {
+    let currentNode = this.head;
+    if (currentNode === null) {
+      return "No List Currently Exists";
+    } else if (currentNode.nextNode === null) {
+      this.head = null;
+      this.size--;
+    } else {
+      while (currentNode.nextNode.nextNode !== null) {
+        currentNode = currentNode.nextNode;
+      }
+      this.tail = currentNode;
+      currentNode.nextNode = null;
+      this.size--;
+    }
+  }
+
+  contains(value) {
+    let currentNode = this.head;
+
+    while (currentNode !== null) {
+      if (currentNode.value === value) {
+        return true;
+      } else {
+        currentNode = currentNode.nextNode;
+      }
+    }
+    return false;
+  }
+
+  find(value) {
+    let currentNode = this.head;
+    let index = 0;
+    while (currentNode !== null) {
+      if (currentNode.value === value) {
+        return index;
+      } else {
+        index++;
+        currentNode = currentNode.nextNode;
+      }
+    }
+    return null;
+  }
+
+  toString() {
+    let array = [];
+    let currentNode = this.head;
+
+    while (currentNode) {
+      array.push(`( ${currentNode.value} ) -> `);
+      currentNode = currentNode.nextNode;
+    }
+    return array.join(" ").toString() + "null";
+  }
+
+  insertAt(value, index) {
+    let count = 0;
+    let currentNode = this.head;
+    let prevNode = null;
+
+    while (count !== index) {
+      if (count === index - 1) {
+        prevNode = currentNode;
+      }
+
+      currentNode = currentNode.nextNode;
+      count++;
+    }
+    let node = new Node(value);
+    node.nextNode = currentNode;
+    prevNode.nextNode = node;
+    this.size++;
+  }
+
+  removeAt(index) {
+    let currentNode = this.head;
+    let count = 0;
+    let prevNode = null;
+
+    if (this.size === 0) {
+      return "No list exists. Nothing to remove.";
+    } else if (index > this.size) {
+      return "Index is larger than the linked list!";
+    }
+
+    while (count !== index) {
+      if (count === index - 1) {
+        prevNode = currentNode;
+      }
+      currentNode = currentNode.nextNode;
+      count++;
+    }
+    prevNode.nextNode = currentNode.nextNode;
+    this.size--;
+  }
 }
 
 class Node {
@@ -63,3 +158,14 @@ class Node {
     this.nextNode = null;
   }
 }
+
+let list = new LinkedList();
+list.append("dog");
+list.append("cat");
+list.append("parrot");
+list.append("hamster");
+list.append("snake");
+list.append("turtle");
+
+list.insertAt("A MOTHER FUCKING DRAGON", 3);
+console.log(list.toString());
